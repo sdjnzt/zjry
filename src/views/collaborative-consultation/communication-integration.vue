@@ -333,6 +333,71 @@ import {
   ExclamationCircleOutlined
 } from '@ant-design/icons-vue'
 
+// 通讯通道数据
+const communicationChannels = ref([
+  {
+    id: 1,
+    name: 'SIP通道001',
+    type: 'SIP',
+    status: 'active',
+    address: '192.168.1.101:5060',
+    lastActivity: '2分钟前',
+    department: '调度中心',
+    deviceType: 'IP电话',
+    signalStrength: '强'
+  },
+  {
+    id: 2,
+    name: 'RTP通道001',
+    type: 'RTP',
+    status: 'active',
+    address: '192.168.1.102:8000',
+    lastActivity: '5分钟前',
+    department: '海事部门',
+    deviceType: '视频设备',
+    signalStrength: '强'
+  },
+  {
+    id: 3,
+    name: 'WebRTC通道001',
+    type: 'WebRTC',
+    status: 'active',
+    address: '192.168.1.103:8080',
+    lastActivity: '1分钟前',
+    department: '港口管理',
+    deviceType: 'Web设备',
+    signalStrength: '中'
+  }
+])
+
+// 调度任务数据
+const dispatchTasks = ref([
+  {
+    id: 1,
+    name: '紧急通讯调度',
+    targetDevice: '船舶A',
+    department: '海事部门',
+    executor: '张调度员',
+    status: '执行中',
+    priority: 'high',
+    startTime: '2024-01-15 09:00',
+    endTime: '2024-01-15 10:00',
+    progress: 75
+  },
+  {
+    id: 2,
+    name: '日常通讯测试',
+    targetDevice: '通讯中心',
+    department: '调度中心',
+    executor: '李操作员',
+    status: '已完成',
+    priority: 'normal',
+    startTime: '2024-01-15 08:00',
+    endTime: '2024-01-15 08:30',
+    progress: 100
+  }
+])
+
 // 筛选与搜索（通道）
 const channelSearchKeyword = ref('')
 const channelTypeFilter = ref('')
@@ -420,98 +485,6 @@ const quickDispatch = reactive({
   command: ''
 })
 
-// 通讯通道数据
-const communicationChannels = ref([
-  {
-    id: 1,
-    name: 'SIP通道001',
-    type: 'SIP',
-    status: 'active',
-    address: '192.168.1.101:5060',
-    lastActivity: '2分钟前',
-    department: '调度中心',
-    deviceType: 'IP电话',
-    signalStrength: '强'
-  },
-  {
-    id: 2,
-    name: 'RTP通道001',
-    type: 'RTP',
-    status: 'active',
-    address: '192.168.1.102:8000',
-    lastActivity: '5分钟前',
-    department: '海事部门',
-    deviceType: '视频设备',
-    signalStrength: '强'
-  },
-  {
-    id: 3,
-    name: 'WebRTC通道001',
-    type: 'WebRTC',
-    status: 'active',
-    address: '192.168.1.103:8080',
-    lastActivity: '1分钟前',
-    department: '港口管理',
-    deviceType: '移动设备',
-    signalStrength: '中'
-  },
-  {
-    id: 4,
-    name: 'SIP通道002',
-    type: 'SIP',
-    status: 'active',
-    address: '192.168.1.104:5060',
-    lastActivity: '3分钟前',
-    department: '应急响应',
-    deviceType: '对讲机',
-    signalStrength: '强'
-  },
-  {
-    id: 5,
-    name: 'RTP通道002',
-    type: 'RTP',
-    status: 'inactive',
-    address: '192.168.1.105:8000',
-    lastActivity: '30分钟前',
-    department: '安全监督',
-    deviceType: '监控设备',
-    signalStrength: '弱'
-  },
-  {
-    id: 6,
-    name: 'WebRTC通道002',
-    type: 'WebRTC',
-    status: 'active',
-    address: '192.168.1.106:8080',
-    lastActivity: '10分钟前',
-    department: '技术保障',
-    deviceType: '平板电脑',
-    signalStrength: '中'
-  },
-  {
-    id: 7,
-    name: 'SIP通道003',
-    type: 'SIP',
-    status: 'active',
-    address: '192.168.1.107:5060',
-    lastActivity: '1分钟前',
-    department: '船舶公司',
-    deviceType: 'IP电话',
-    signalStrength: '强'
-  },
-  {
-    id: 8,
-    name: 'RTP通道003',
-    type: 'RTP',
-    status: 'active',
-    address: '192.168.1.108:8000',
-    lastActivity: '5分钟前',
-    department: '气象部门',
-    deviceType: '传感器',
-    signalStrength: '强'
-  }
-])
-
 // 通讯通道表格列定义
 /**
  * 通道列表列配置
@@ -564,91 +537,6 @@ const channelColumns = [
     slots: { customRender: 'action' }
   }
 ]
-
-// 调度任务数据
-/**
- * 调度任务数据（替换更真实中文姓名为执行人）
- */
-const dispatchTasks = ref([
-  {
-    id: 1,
-    name: '摄像头001应急调度任务',
-    type: 'emergency',
-    targetDevice: 'camera-001',
-    status: 'running',
-    priority: 'high',
-    startTime: '2025-08-20 09:00:00',
-    progress: 75,
-    department: '调度中心',
-    executor: '陈志强',
-    estimatedTime: '15分钟'
-  },
-  {
-    id: 2,
-    name: '传感器001例行调度任务',
-    type: 'routine',
-    targetDevice: 'sensor-001',
-    status: 'completed',
-    priority: 'medium',
-    startTime: '2025-08-20 08:30:00',
-    progress: 100,
-    department: '技术保障',
-    executor: '刘建国',
-    estimatedTime: '30分钟'
-  },
-  {
-    id: 3,
-    name: '对讲机002通讯调度任务',
-    type: 'coordination',
-    targetDevice: 'radio-002',
-    status: 'running',
-    priority: 'high',
-    startTime: '2025-08-20 10:00:00',
-    progress: 45,
-    department: '应急响应',
-    executor: '王海峰',
-    estimatedTime: '20分钟'
-  },
-  {
-    id: 4,
-    name: 'IP电话003调度任务',
-    type: 'routine',
-    targetDevice: 'phone-003',
-    status: 'pending',
-    priority: 'medium',
-    startTime: '2025-08-20 11:00:00',
-    progress: 0,
-    department: '港口管理',
-    executor: '赵明华',
-    estimatedTime: '25分钟'
-  },
-  {
-    id: 5,
-    name: '视频设备004调度任务',
-    type: 'emergency',
-    targetDevice: 'video-004',
-    status: 'completed',
-    priority: 'high',
-    startTime: '2025-08-20 07:00:00',
-    progress: 100,
-    department: '安全监督',
-    executor: '钱伟民',
-    estimatedTime: '40分钟'
-  },
-  {
-    id: 6,
-    name: '移动设备005调度任务',
-    type: 'routine',
-    targetDevice: 'mobile-005',
-    status: 'running',
-    priority: 'low',
-    startTime: '2025-08-20 09:30:00',
-    progress: 60,
-    department: '技术保障',
-    executor: '孙志刚',
-    estimatedTime: '35分钟'
-  }
-])
 
 // 调度任务表格列定义
 /**

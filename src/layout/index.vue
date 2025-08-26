@@ -21,7 +21,7 @@
       >
         <template v-for="route in menuRoutes" :key="route.path">
           <!-- 有子菜单的情况 -->
-          <a-sub-menu v-if="route.children && route.children.length > 0" :key="route.path">
+          <a-sub-menu v-if="route.children && route.children.length > 0" :key="`sub-${route.path}`">
             <template #title>
               <component :is="getIcon(route.meta?.icon)" />
               <span>{{ route.meta?.title }}</span>
@@ -38,7 +38,7 @@
           <!-- 没有子菜单的情况 -->
           <a-menu-item
             v-else
-            :key="route.path"
+            :key="`item-${route.path}`"
             @click="handleMenuClick(route)"
           >
             <component :is="getIcon(route.meta?.icon)" />
@@ -162,8 +162,11 @@ const iconMap: Record<string, any> = {
  * @param iconName 图标名称
  * @returns 图标组件
  */
-const getIcon = (iconName?: string) => {
-  return iconName ? iconMap[iconName] || VideoCameraOutlined : VideoCameraOutlined
+const getIcon = (iconName?: string | unknown) => {
+  if (typeof iconName === 'string') {
+    return iconMap[iconName] || VideoCameraOutlined
+  }
+  return VideoCameraOutlined
 }
 
 /**

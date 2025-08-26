@@ -378,18 +378,18 @@
       :footer="null"
     >
       <a-descriptions :column="2" bordered>
-        <a-descriptions-item label="广播ID">{{ selectedRecord.id }}</a-descriptions-item>
-        <a-descriptions-item label="广播名称">{{ selectedRecord.name }}</a-descriptions-item>
-        <a-descriptions-item label="广播类型">{{ selectedRecord.type }}</a-descriptions-item>
-        <a-descriptions-item label="广播状态">{{ getRecordStatusText(selectedRecord.status) }}</a-descriptions-item>
-        <a-descriptions-item label="优先级">{{ getPriorityText(selectedRecord.priority) }}</a-descriptions-item>
-        <a-descriptions-item label="负责部门">{{ selectedRecord.department || '无' }}</a-descriptions-item>
-        <a-descriptions-item label="操作员">{{ selectedRecord.operator || '无' }}</a-descriptions-item>
-        <a-descriptions-item label="广播区域">{{ selectedRecord.area }}</a-descriptions-item>
-        <a-descriptions-item label="开始时间">{{ selectedRecord.startTime }}</a-descriptions-item>
-        <a-descriptions-item label="结束时间">{{ selectedRecord.endTime }}</a-descriptions-item>
-        <a-descriptions-item label="广播内容" :span="2">{{ selectedRecord.content }}</a-descriptions-item>
-        <a-descriptions-item label="备注" :span="2">{{ selectedRecord.remark || '无' }}</a-descriptions-item>
+        <a-descriptions-item label="广播ID">{{ selectedRecord?.id }}</a-descriptions-item>
+        <a-descriptions-item label="广播名称">{{ selectedRecord?.name }}</a-descriptions-item>
+        <a-descriptions-item label="广播类型">{{ selectedRecord?.type }}</a-descriptions-item>
+        <a-descriptions-item label="广播状态">{{ getRecordStatusText(selectedRecord?.status || '') }}</a-descriptions-item>
+        <a-descriptions-item label="优先级">{{ getPriorityText(selectedRecord?.priority || '') }}</a-descriptions-item>
+        <a-descriptions-item label="负责部门">{{ selectedRecord?.department || '无' }}</a-descriptions-item>
+        <a-descriptions-item label="操作员">{{ selectedRecord?.operator || '无' }}</a-descriptions-item>
+        <a-descriptions-item label="广播区域">{{ selectedRecord?.area }}</a-descriptions-item>
+        <a-descriptions-item label="开始时间">{{ selectedRecord?.startTime }}</a-descriptions-item>
+        <a-descriptions-item label="结束时间">{{ selectedRecord?.endTime }}</a-descriptions-item>
+        <a-descriptions-item label="广播内容" :span="2">{{ selectedRecord?.content }}</a-descriptions-item>
+        <a-descriptions-item label="备注" :span="2">{{ selectedRecord?.remark || '无' }}</a-descriptions-item>
       </a-descriptions>
     </a-modal>
   </div>
@@ -698,9 +698,27 @@ const levelBroadcasting = ref(false)
 const areaBroadcasting = ref(false)
 
 /**
+ * 广播记录类型定义
+ */
+interface BroadcastRecord {
+  id: string | number
+  name: string
+  type: string
+  status: string
+  priority: string
+  department?: string
+  operator?: string
+  area: string
+  startTime: string
+  endTime: string
+  content: string
+  remark?: string
+}
+
+/**
  * 广播记录数据
  */
-const broadcastRecords = ref([
+const broadcastRecords = ref<BroadcastRecord[]>([
   {
     id: 'BC001',
     name: '紧急通知广播',
@@ -931,7 +949,7 @@ const recordColumns = [
  * 模态框控制
  */
 const detailsModalVisible = ref(false)
-const selectedRecord = ref({})
+const selectedRecord = ref<BroadcastRecord | null>(null)
 
 /**
  * 获取优先级颜色
