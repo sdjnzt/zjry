@@ -941,7 +941,7 @@ const availableCameras = ref([
     status: 'online', 
     lastUpdate: '2025-08-26 14:30:25',
     mediaType: 'video',
-    mediaPath: '/image/1.mp4'
+    mediaPath: '/zjry/image/1.pm4'
   },
   { 
     id: 2, 
@@ -953,7 +953,7 @@ const availableCameras = ref([
     status: 'online', 
     lastUpdate: '2025-08-26 14:30:22',
     mediaType: 'image',
-    mediaPath: '/image/2.png'
+    mediaPath: '/zjry/image/2.png'
   },
   { 
     id: 3, 
@@ -965,7 +965,7 @@ const availableCameras = ref([
     status: 'online', 
     lastUpdate: '2025-08-26 14:25:18',
     mediaType: 'image',
-    mediaPath: '/image/3.png'
+    mediaPath: '/zjry/image/3.png'
   },
   { 
     id: 4, 
@@ -977,7 +977,7 @@ const availableCameras = ref([
     status: 'online', 
     lastUpdate: '2025-08-26 14:30:28',
     mediaType: 'image',
-    mediaPath: '/image/4.png'
+    mediaPath: '/zjry/image/4.png'
   },
   { 
     id: 5, 
@@ -989,7 +989,7 @@ const availableCameras = ref([
     status: 'online', 
     lastUpdate: '2025-08-26 14:30:20',
     mediaType: 'video',
-    mediaPath: '/image/1.mp4'
+    mediaPath: '/zjry/image/1.mp4'
   },
   { 
     id: 6, 
@@ -1001,7 +1001,7 @@ const availableCameras = ref([
     status: 'online', 
     lastUpdate: '2025-08-26 14:30:15',
     mediaType: 'image',
-    mediaPath: '/image/1.png'
+    mediaPath: '/zjry/image/1.png'
   }
 ])
 

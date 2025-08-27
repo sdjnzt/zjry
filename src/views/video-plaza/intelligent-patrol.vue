@@ -352,11 +352,11 @@ const patrolPlans = ref([
     cameras: [
       { 
         id: 1, 
-        name: '锚地1号监控', 
+        name: '码头1号监控', 
         location: '码头前沿A区', 
         status: '在线',
         mediaType: 'image',
-        mediaPath: '/image/4.png'
+        mediaPath: '/zjry/image/1.png'
       },
       { 
         id: 2, 
@@ -364,7 +364,7 @@ const patrolPlans = ref([
         location: '码头前沿B区', 
         status: '在线',
         mediaType: 'image',
-        mediaPath: '/image/2.png'
+        mediaPath: '/zjry/image/2.png'
       },
       { 
         id: 3, 
@@ -372,7 +372,7 @@ const patrolPlans = ref([
         location: '码头前沿C区', 
         status: '在线',
         mediaType: 'image',
-        mediaPath: '/image/3.png'
+        mediaPath: '/zjry/image/3.png'
       }
     ]
   },
@@ -388,7 +388,7 @@ const patrolPlans = ref([
         location: '主航道入口', 
         status: '在线',
         mediaType: 'image',
-        mediaPath: '/image/4.png'
+        mediaPath: '/zjry/image/4.png'
       },
       { 
         id: 5, 
@@ -396,7 +396,7 @@ const patrolPlans = ref([
         location: '主航道中段', 
         status: '在线',
         mediaType: 'image',
-        mediaPath: '/image/1.png'
+        mediaPath: '/zjry/image/1.png'
       }
     ]
   },
@@ -412,7 +412,7 @@ const patrolPlans = ref([
         location: '锚地区域中心', 
         status: '在线',
         mediaType: 'image',
-        mediaPath: '/image/1.png'
+        mediaPath: '/zjry/image/1.png'
       }
     ]
   },
@@ -428,15 +428,15 @@ const patrolPlans = ref([
         location: '码头前沿D区', 
         status: '在线',
         mediaType: 'image',
-        mediaPath: '/image/1.png'
+        mediaPath: '/zjry/image/1.png'
       },
       { 
         id: 1, 
         name: '码头1号监控', 
         location: '码头前沿A区', 
         status: '在线',
-        mediaType: 'video',
-        mediaPath: '/image/1.mp4'
+        mediaType: 'image',
+        mediaPath: '/zjry/image/1.png'
       }
     ]
   },
@@ -452,7 +452,7 @@ const patrolPlans = ref([
         location: '主航道出口', 
         status: '在线',
         mediaType: 'image',
-        mediaPath: '/image/1.png'
+        mediaPath: '/zjry/image/1.png'
       },
       { 
         id: 5, 
@@ -460,7 +460,7 @@ const patrolPlans = ref([
         location: '主航道中段', 
         status: '在线',
         mediaType: 'image',
-        mediaPath: '/image/1.png'
+        mediaPath: '/zjry/image/1.png'
       }
     ]
   }
@@ -474,7 +474,7 @@ const availableCameras = ref([
     location: '码头前沿A区', 
     status: '在线',
     mediaType: 'image',
-    mediaPath: '/image/1.png'
+    mediaPath: '/zjry/image/1.png'
   },
   { 
     key: 2, 
@@ -482,7 +482,7 @@ const availableCameras = ref([
     location: '码头前沿B区', 
     status: '在线',
     mediaType: 'image',
-    mediaPath: '/image/2.png'
+    mediaPath: '/zjry/image/2.png'
   },
   { 
     key: 3, 
@@ -490,7 +490,7 @@ const availableCameras = ref([
     location: '码头前沿C区', 
     status: '在线',
     mediaType: 'image',
-    mediaPath: '/image/3.png'
+    mediaPath: '/zjry/image/3.png'
   },
   { 
     key: 4, 
@@ -498,7 +498,7 @@ const availableCameras = ref([
     location: '主航道入口', 
     status: '在线',
     mediaType: 'image',
-    mediaPath: '/image/4.png'
+    mediaPath: '/zjry/image/4.png'
   },
   { 
     key: 5, 
@@ -506,7 +506,7 @@ const availableCameras = ref([
     location: '主航道中段', 
     status: '在线',
     mediaType: 'image',
-    mediaPath: '/image/1.png'
+    mediaPath: '/zjry/image/1.png'
   },
   { 
     key: 6, 
@@ -514,7 +514,7 @@ const availableCameras = ref([
     location: '锚地区域中心', 
     status: '在线',
     mediaType: 'image',
-    mediaPath: '/image/1.png'
+    mediaPath: '/zjry/image/1.png'
   },
   { 
     key: 7, 
@@ -522,7 +522,7 @@ const availableCameras = ref([
     location: '码头前沿D区', 
     status: '在线',
     mediaType: 'image',
-    mediaPath: '/image/1.png'
+    mediaPath: '/zjry/image/1.png'
   },
   { 
     key: 8, 
@@ -530,7 +530,7 @@ const availableCameras = ref([
     location: '主航道出口', 
     status: '在线',
     mediaType: 'image',
-    mediaPath: '/image/1.png'
+    mediaPath: '/zjry/image/1.png'
   }
 ])
 
