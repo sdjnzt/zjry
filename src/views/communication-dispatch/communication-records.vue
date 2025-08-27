@@ -257,20 +257,20 @@
       :footer="null"
     >
       <a-descriptions :column="2" bordered>
-        <a-descriptions-item label="通讯ID">{{ selectedRecord.id }}</a-descriptions-item>
-        <a-descriptions-item label="通讯名称">{{ selectedRecord.name }}</a-descriptions-item>
-        <a-descriptions-item label="通讯类型">{{ getTypeText(selectedRecord.type) }}</a-descriptions-item>
-        <a-descriptions-item label="通讯状态">{{ getStatusText(selectedRecord.status) }}</a-descriptions-item>
-        <a-descriptions-item label="优先级">{{ getPriorityText(selectedRecord.priority) }}</a-descriptions-item>
-        <a-descriptions-item label="发起设备">{{ selectedRecord.initiator }}</a-descriptions-item>
-        <a-descriptions-item label="目标设备">{{ selectedRecord.target }}</a-descriptions-item>
-        <a-descriptions-item label="开始时间">{{ selectedRecord.startTime }}</a-descriptions-item>
-        <a-descriptions-item label="结束时间">{{ selectedRecord.endTime }}</a-descriptions-item>
-        <a-descriptions-item label="通讯时长">{{ formatDuration(selectedRecord.duration) }}</a-descriptions-item>
-        <a-descriptions-item label="信号强度">{{ selectedRecord.signalStrength }}%</a-descriptions-item>
-        <a-descriptions-item label="延迟">{{ selectedRecord.latency }}ms</a-descriptions-item>
-        <a-descriptions-item label="丢包率">{{ selectedRecord.packetLoss }}%</a-descriptions-item>
-        <a-descriptions-item label="备注" :span="2">{{ selectedRecord.remark || '无' }}</a-descriptions-item>
+        <a-descriptions-item label="通讯ID">{{ selectedRecord?.id }}</a-descriptions-item>
+        <a-descriptions-item label="通讯名称">{{ selectedRecord?.name }}</a-descriptions-item>
+        <a-descriptions-item label="通讯类型">{{ getTypeText(selectedRecord?.type || '') }}</a-descriptions-item>
+        <a-descriptions-item label="通讯状态">{{ getStatusText(selectedRecord?.status || '') }}</a-descriptions-item>
+        <a-descriptions-item label="优先级">{{ getPriorityText(selectedRecord?.priority || '') }}</a-descriptions-item>
+        <a-descriptions-item label="发起设备">{{ selectedRecord?.initiator }}</a-descriptions-item>
+        <a-descriptions-item label="目标设备">{{ selectedRecord?.target }}</a-descriptions-item>
+        <a-descriptions-item label="开始时间">{{ selectedRecord?.startTime }}</a-descriptions-item>
+        <a-descriptions-item label="结束时间">{{ selectedRecord?.endTime }}</a-descriptions-item>
+        <a-descriptions-item label="通讯时长">{{ formatDuration(selectedRecord?.duration || 0) }}</a-descriptions-item>
+        <a-descriptions-item label="信号强度">{{ selectedRecord?.signalStrength }}%</a-descriptions-item>
+        <a-descriptions-item label="延迟">{{ selectedRecord?.latency }}ms</a-descriptions-item>
+        <a-descriptions-item label="丢包率">{{ selectedRecord?.packetLoss }}%</a-descriptions-item>
+        <a-descriptions-item label="备注" :span="2">{{ selectedRecord?.remark || '无' }}</a-descriptions-item>
       </a-descriptions>
     </a-modal>
   </div>
@@ -312,9 +312,29 @@ const loading = ref(false)
 const selectedRowKeys = ref<string[]>([])
 
 /**
+ * 通讯记录类型定义
+ */
+interface CommunicationRecord {
+  id: string
+  name: string
+  type: string
+  status: string
+  priority: string
+  initiator: string
+  target: string
+  startTime: string
+  endTime: string
+  duration: number
+  signalStrength: number
+  latency: number
+  packetLoss: number
+  remark?: string
+}
+
+/**
  * 通讯记录数据
  */
-const communicationRecords = ref([
+const communicationRecords = ref<CommunicationRecord[]>([
   {
     id: 'COM001',
     name: '紧急情况通报',
@@ -628,7 +648,7 @@ const durationTrendChartRef = ref<HTMLElement | null>(null)
  * 模态框控制
  */
 const detailsModalVisible = ref(false)
-const selectedRecord = ref({})
+const selectedRecord = ref<CommunicationRecord | null>(null)
 
 /**
  * 计算属性
@@ -790,7 +810,7 @@ const onSelectChange = (keys: string[]) => {
 /**
  * 查看详情
  */
-const viewDetails = (record: any) => {
+const viewDetails = (record: CommunicationRecord) => {
   selectedRecord.value = record
   detailsModalVisible.value = true
 }
@@ -798,21 +818,21 @@ const viewDetails = (record: any) => {
 /**
  * 回放记录
  */
-const replayRecord = (record: any) => {
+const replayRecord = (record: CommunicationRecord) => {
   message.info(`开始回放通讯记录: ${record.id}`)
 }
 
 /**
  * 编辑记录
  */
-const editRecord = (record: any) => {
+const editRecord = (record: CommunicationRecord) => {
   message.info(`编辑通讯记录: ${record.id}`)
 }
 
 /**
  * 删除记录
  */
-const deleteRecord = (record: any) => {
+const deleteRecord = (record: CommunicationRecord) => {
   message.success(`通讯记录 ${record.id} 已删除`)
 }
 
