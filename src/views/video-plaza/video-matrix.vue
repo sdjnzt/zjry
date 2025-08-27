@@ -941,7 +941,7 @@ const availableCameras = ref([
     status: 'online', 
     lastUpdate: '2025-08-26 14:30:25',
     mediaType: 'video',
-    mediaPath: '/zjry/image/1.pm4'
+    mediaPath: '/zjry/image/1.mp4'
   },
   { 
     id: 2, 
