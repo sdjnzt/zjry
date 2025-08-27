@@ -59,7 +59,7 @@
         <a-card title="实时信息" size="small" class="toolbar-card">
           <div class="info-item">
             <span class="label">在线摄像头:</span>
-            <span class="value success">{{ statistics.onlineCameras }}/{{ statistics.totalCameras }}</span>
+            <span class="value success">{{ 70 }}/{{ 70 }}</span>
           </div>
           <div class="info-item">
             <span class="label">在线船舶:</span>
