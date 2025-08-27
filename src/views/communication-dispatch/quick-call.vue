@@ -320,17 +320,17 @@
       :footer="null"
     >
       <a-descriptions :column="2" bordered>
-        <a-descriptions-item label="呼叫ID">{{ selectedRecord.id }}</a-descriptions-item>
-        <a-descriptions-item label="呼叫类型">{{ getCallTypeText(selectedRecord.callType) }}</a-descriptions-item>
-        <a-descriptions-item label="目标设备">{{ selectedRecord.targetName }}</a-descriptions-item>
-        <a-descriptions-item label="呼叫状态">{{ getRecordStatusText(selectedRecord.status) }}</a-descriptions-item>
-        <a-descriptions-item label="优先级">{{ getPriorityText(selectedRecord.priority) }}</a-descriptions-item>
-        <a-descriptions-item label="负责部门">{{ selectedRecord.department || '无' }}</a-descriptions-item>
-        <a-descriptions-item label="操作员">{{ selectedRecord.operator || '无' }}</a-descriptions-item>
-        <a-descriptions-item label="开始时间">{{ selectedRecord.startTime }}</a-descriptions-item>
-        <a-descriptions-item label="结束时间">{{ selectedRecord.endTime }}</a-descriptions-item>
-        <a-descriptions-item label="通话时长">{{ selectedRecord.duration }}</a-descriptions-item>
-        <a-descriptions-item label="备注" :span="2">{{ selectedRecord.remark || '无' }}</a-descriptions-item>
+        <a-descriptions-item label="呼叫ID">{{ selectedRecord?.id }}</a-descriptions-item>
+        <a-descriptions-item label="呼叫类型">{{ getCallTypeText(selectedRecord?.callType || '') }}</a-descriptions-item>
+        <a-descriptions-item label="目标设备">{{ selectedRecord?.targetName }}</a-descriptions-item>
+        <a-descriptions-item label="呼叫状态">{{ getRecordStatusText(selectedRecord?.status || '') }}</a-descriptions-item>
+        <a-descriptions-item label="优先级">{{ getPriorityText(selectedRecord?.priority || '') }}</a-descriptions-item>
+        <a-descriptions-item label="负责部门">{{ selectedRecord?.department || '无' }}</a-descriptions-item>
+        <a-descriptions-item label="操作员">{{ selectedRecord?.operator || '无' }}</a-descriptions-item>
+        <a-descriptions-item label="开始时间">{{ selectedRecord?.startTime }}</a-descriptions-item>
+        <a-descriptions-item label="结束时间">{{ selectedRecord?.endTime }}</a-descriptions-item>
+        <a-descriptions-item label="通话时长">{{ selectedRecord?.duration }}</a-descriptions-item>
+        <a-descriptions-item label="备注" :span="2">{{ selectedRecord?.remark || '无' }}</a-descriptions-item>
       </a-descriptions>
     </a-modal>
   </div>
@@ -596,10 +596,26 @@ const loading = ref(false)
 const calling = ref(false)
 
 /**
+ * 呼叫记录类型定义
+ */
+interface CallRecord {
+  id: string
+  callType: string
+  targetName: string
+  status: string
+  priority: string
+  department?: string
+  operator?: string
+  startTime: string
+  endTime: string
+  duration: string
+  remark?: string
+}
+
+/**
  * 呼叫记录数据
  */
-/** 呼叫记录（目标与操作员更新为更真实中文） */
-const callRecords = ref([
+const callRecords = ref<CallRecord[]>([
   {
     id: 'CALL001',
     callType: 'single',
@@ -819,7 +835,7 @@ const recordColumns = [
  * 模态框控制
  */
 const detailsModalVisible = ref(false)
-const selectedRecord = ref({})
+const selectedRecord = ref<CallRecord | null>(null)
 
 /**
  * 获取状态文本

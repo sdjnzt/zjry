@@ -325,14 +325,14 @@
       :footer="null"
     >
       <a-descriptions :column="1" bordered>
-        <a-descriptions-item label="日志ID">{{ selectedLog.id }}</a-descriptions-item>
-        <a-descriptions-item label="时间">{{ selectedLog.timestamp }}</a-descriptions-item>
-        <a-descriptions-item label="级别">{{ getLogLevelText(selectedLog.level) }}</a-descriptions-item>
-        <a-descriptions-item label="源节点">{{ selectedLog.source }}</a-descriptions-item>
-        <a-descriptions-item label="目标节点">{{ selectedLog.target }}</a-descriptions-item>
-        <a-descriptions-item label="路由状态">{{ selectedLog.status }}</a-descriptions-item>
-        <a-descriptions-item label="响应时间">{{ selectedLog.responseTime }}ms</a-descriptions-item>
-        <a-descriptions-item label="详细信息">{{ selectedLog.message }}</a-descriptions-item>
+        <a-descriptions-item label="日志ID">{{ selectedLog?.id }}</a-descriptions-item>
+        <a-descriptions-item label="时间">{{ selectedLog?.timestamp }}</a-descriptions-item>
+        <a-descriptions-item label="级别">{{ getLogLevelText(selectedLog?.level || '') }}</a-descriptions-item>
+        <a-descriptions-item label="源节点">{{ selectedLog?.source }}</a-descriptions-item>
+        <a-descriptions-item label="目标节点">{{ selectedLog?.target }}</a-descriptions-item>
+        <a-descriptions-item label="路由状态">{{ selectedLog?.status }}</a-descriptions-item>
+        <a-descriptions-item label="响应时间">{{ selectedLog?.responseTime }}ms</a-descriptions-item>
+        <a-descriptions-item label="详细信息">{{ selectedLog?.message }}</a-descriptions-item>
       </a-descriptions>
     </a-modal>
   </div>
@@ -421,9 +421,23 @@ const performanceData = ref([
 ])
 
 /**
+ * 路由日志类型定义
+ */
+interface RoutingLog {
+  id: string
+  timestamp: string
+  level: string
+  source: string
+  target: string
+  status: string
+  responseTime: number
+  message: string
+}
+
+/**
  * 路由日志数据
  */
-const routingLogs = ref([
+const routingLogs = ref<RoutingLog[]>([
   {
     id: 'LOG001',
     timestamp: '2025-08-26 10:30:00',
@@ -558,7 +572,7 @@ const editingRule = reactive({
   priority: 'normal',
   description: ''
 })
-const selectedLog = ref({})
+const selectedLog = ref<RoutingLog | null>(null)
 
 /**
  * 获取性能颜色
