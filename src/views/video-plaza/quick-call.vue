@@ -8,7 +8,7 @@
 
     <!-- 统计卡片 + 工具栏 -->
     <div class="stats-cards">
-      <a-row :gutter="16">
+          <a-row :gutter="16">
         <a-col :span="6">
           <a-card :bordered="false" class="elevated-card">
             <a-statistic title="摄像头总数" :value="70" />
@@ -44,40 +44,40 @@
     <a-card title="快速搜索" style="margin-bottom: 16px">
       <a-row :gutter="16" align="middle">
         <a-col :xs="24" :sm="12" :md="10" :lg="8">
-          <a-input-search
+              <a-input-search
             v-model:value="searchText"
             placeholder="输入摄像头编号或名称（如 CAM001 / 码头前沿）"
-            enter-button="搜索"
+                enter-button="搜索"
             @search="handleSearch"
-          />
-        </a-col>
+              />
+            </a-col>
         <a-col :xs="12" :sm="6" :md="6" :lg="5">
-          <a-select
+              <a-select
             v-model:value="selectedArea"
-            placeholder="选择区域"
-            style="width: 100%"
+                placeholder="选择区域"
+                style="width: 100%"
             @change="handleAreaFilter"
-          >
-            <a-select-option value="">全部区域</a-select-option>
-            <a-select-option value="码头">码头区域</a-select-option>
-            <a-select-option value="航道">航道区域</a-select-option>
-            <a-select-option value="锚地">锚地区域</a-select-option>
-          </a-select>
-        </a-col>
+              >
+                <a-select-option value="">全部区域</a-select-option>
+                <a-select-option value="码头">码头区域</a-select-option>
+                <a-select-option value="航道">航道区域</a-select-option>
+                <a-select-option value="锚地">锚地区域</a-select-option>
+              </a-select>
+            </a-col>
         <a-col :xs="12" :sm="6" :md="6" :lg="5">
-          <a-select
-            v-model:value="selectedStatus"
-            placeholder="选择状态"
-            style="width: 100%"
+              <a-select
+                v-model:value="selectedStatus"
+                placeholder="选择状态"
+                style="width: 100%"
             @change="handleStatusFilter"
-          >
-            <a-select-option value="">全部状态</a-select-option>
-            <a-select-option value="online">在线</a-select-option>
-            <a-select-option value="offline">离线</a-select-option>
-          </a-select>
-        </a-col>
+              >
+                <a-select-option value="">全部状态</a-select-option>
+                <a-select-option value="online">在线</a-select-option>
+                <a-select-option value="offline">离线</a-select-option>
+              </a-select>
+            </a-col>
         
-      </a-row>
+          </a-row>
       <!-- 已选条件标签 -->
       <div class="filter-tags" v-if="searchText || selectedArea || selectedStatus">
         <a-space wrap>
@@ -846,8 +846,8 @@ const callRecentOnline = () => {
     return
   }
   selectedCamera.value = camera
-  callCamera(camera)
-}
+    callCamera(camera)
+  }
 
 /**
  * 导出当前筛选列表（控制台模拟导出）
@@ -916,14 +916,14 @@ onBeforeUnmount(() => {
     margin-bottom: 24px;
 
     h1 {
-      font-size: 28px;
-      color: #1890ff;
+        font-size: 28px;
+          color: #1890ff;
       margin-bottom: 8px;
-    }
+      }
 
     p {
-      color: #666;
-      font-size: 16px;
+        color: #666;
+        font-size: 16px;
     }
   }
 
@@ -947,22 +947,22 @@ onBeforeUnmount(() => {
       margin-top: 12px;
       display: flex;
       justify-content: flex-end;
-
-      .ant-btn {
+            
+            .ant-btn {
         border-radius: 20px;
       }
     }
   }
 
   .ant-card {
-    border-radius: 8px;
+              border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
+        }
 
-  .ant-table {
-    .ant-table-thead > tr > th {
-      background-color: #fafafa;
-      font-weight: 600;
+        .ant-table {
+          .ant-table-thead > tr > th {
+            background-color: #fafafa;
+            font-weight: 600;
     }
   }
 

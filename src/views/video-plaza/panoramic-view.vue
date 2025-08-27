@@ -68,7 +68,24 @@
           <!-- 高德地图容器 -->
           <div id="amap-container" class="amap-container"></div>
           
-          
+          <!-- 添加地图加载提示和错误处理 -->
+          <div v-if="mapStatus !== 'ready'" class="map-loading">
+            <a-spin size="large">
+              <template #indicator>
+                <LoadingOutlined style="font-size: 24px" />
+              </template>
+            </a-spin>
+            <div class="loading-text">地图加载中...</div>
+            <div v-if="mapStatus === 'error'" class="error-text">
+              <p>地图加载失败，可能的原因：</p>
+              <ul>
+                <li>高德地图API密钥未配置</li>
+                <li>网络连接问题</li>
+                <li>API调用限制</li>
+              </ul>
+              <p>请检查环境变量配置或联系管理员</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -427,7 +444,8 @@ import {
   AimOutlined,
   ReloadOutlined,
   FullscreenOutlined,
-  PlayCircleOutlined
+  PlayCircleOutlined,
+  LoadingOutlined
 } from '@ant-design/icons-vue'
 import { mapConfig, validateConfig } from '@/config/map'
 
@@ -455,6 +473,9 @@ const selectedAlarm = ref<any>(null)
 let dataUpdateTimer: NodeJS.Timeout | null = null
 let map: any = null
 let markers: any[] = []
+
+// 地图加载状态
+const mapStatus = ref<'loading' | 'ready' | 'error'>('loading')
 
 // 图层控制
 const layerControl = reactive({
@@ -809,6 +830,7 @@ const initMap = () => {
   // 检查是否已加载高德地图API
   if (typeof AMap === 'undefined') {
     console.error('高德地图API未加载')
+    mapStatus.value = 'error'
     return
   }
 
@@ -839,9 +861,11 @@ const initMap = () => {
     // 启动碰撞检测
     startCollisionDetection()
     
+    mapStatus.value = 'ready'
     console.log('地图初始化成功')
   } catch (error) {
     console.error('地图初始化失败:', error)
+    mapStatus.value = 'error'
   }
 }
 
@@ -1909,6 +1933,52 @@ onUnmounted(() => {
     
     .video-status {
       text-align: center;
+    }
+  }
+
+  .map-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    .loading-text {
+      margin-top: 10px;
+      font-size: 16px;
+      color: @text-color;
+    }
+
+    .error-text {
+      margin-top: 10px;
+      font-size: 14px;
+      color: @text-color-secondary;
+      padding: 10px;
+      background-color: #fffbe6;
+      border: 1px solid #ffe58f;
+      border-radius: 4px;
+      text-align: left;
+
+      p {
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      ul {
+        padding-left: 20px;
+        margin-bottom: 5px;
+      }
+
+      li {
+        list-style: disc;
+        margin-bottom: 3px;
+      }
     }
   }
 }
