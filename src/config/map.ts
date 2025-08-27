@@ -7,24 +7,24 @@ export const mapConfig = {
   // 高德地图配置
   amap: {
     // API密钥（需要从环境变量获取）
-    apiKey: import.meta.env.VITE_AMAP_API_KEY || 'YOUR_AMAP_KEY',
+    apiKey: import.meta.env.VITE_AMAP_API_KEY || '0c125857f468ed6834d9490b6ee95c33',
     // API版本
-    version: '2.0',
+    version: '1.4.15',
     // 默认中心点（济宁港坐标）
-    defaultCenter: [116.5800, 35.3800],
+    defaultCenter: [116.6000, 35.4000],
     // 默认缩放级别
-    defaultZoom: 12,
+    defaultZoom: 10,
     // 地图样式
     mapStyle: 'amap://styles/normal',
     // 视图模式
-    viewMode: '2D',
+    viewMode: '3D',
     // 地图特性
     features: ['bg', 'road', 'building', 'point'],
-    // 插件列表
+    // 插件列表 - 使用正确的插件名称
     plugins: ['AMap.Scale', 'AMap.ToolBar', 'AMap.MapType']
   },
   
-  // 模拟地图配置
+  // 模拟地图配置（备用方案）
   mock: {
     // 地图中心点（相对坐标）
     center: [50, 50],

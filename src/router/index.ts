@@ -466,10 +466,12 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  // 在GitHub Pages环境下使用hash模式，避免SPA路由问题
-  history: window.location.hostname.includes('github.io') 
-    ? createWebHashHistory() 
-    : createWebHistory(),
+  // 本地开发使用history模式，GitHub Pages使用hash模式
+  history: import.meta.env.DEV 
+    ? createWebHistory() 
+    : window.location.hostname.includes('github.io') 
+      ? createWebHashHistory() 
+      : createWebHistory(),
   routes
 })
 
@@ -500,7 +502,16 @@ router.beforeEach((to, from, next) => {
       return
     }
     
-    // 本地环境重定向到登录页面
+    // 本地开发环境，跳过登录检查
+    if (import.meta.env.DEV) {
+      console.log('本地开发环境，跳过登录检查')
+      localStorage.setItem('isLoggedIn', 'true')
+      localStorage.setItem('currentUser', 'dev')
+      next()
+      return
+    }
+    
+    // 生产环境重定向到登录页面
     next('/login')
     return
   }

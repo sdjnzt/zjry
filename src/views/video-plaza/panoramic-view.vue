@@ -3,6 +3,16 @@
     <div class="page-header">
       <h2>全景视图</h2>
       <p>在真实地图上，集成显示山东省济宁市济宁港和梁山港水域区域摄像头点位、船舶AIS位置、气象水文站等要素</p>
+      
+      <!-- 添加地图状态指示器 -->
+      <div class="map-status-indicator">
+        <a-tag :color="mapStatus === 'ready' ? 'success' : mapStatus === 'loading' ? 'processing' : 'error'">
+          {{ mapStatus === 'ready' ? '地图已加载' : mapStatus === 'loading' ? '地图加载中' : '地图加载失败' }}
+        </a-tag>
+        <a-button v-if="mapStatus === 'error'" size="small" type="primary" @click="retryLoadMap" style="margin-left: 8px;">
+          重试加载
+        </a-button>
+      </div>
     </div>
 
     <div class="content-wrapper">
@@ -79,11 +89,13 @@
             <div v-if="mapStatus === 'error'" class="error-text">
               <p>地图加载失败，可能的原因：</p>
               <ul>
-                <li>高德地图API密钥未配置</li>
+                <li>高德地图API密钥无效或过期</li>
                 <li>网络连接问题</li>
                 <li>API调用限制</li>
+                <li>GitHub Pages环境限制</li>
               </ul>
               <p>请检查环境变量配置或联系管理员</p>
+              <a-button type="primary" @click="retryLoadMap">重试加载</a-button>
             </div>
           </div>
         </div>
@@ -844,10 +856,39 @@ const initMap = () => {
       viewMode: mapConfig.amap.viewMode
     })
 
-    // 添加地图控件
-    map.addControl(new AMap.Scale())
-    map.addControl(new AMap.ToolBar())
-    map.addControl(new AMap.MapType())
+    // 添加地图控件（添加可用性检查）
+    try {
+      if (typeof AMap.Scale === 'function') {
+        map.addControl(new AMap.Scale())
+        console.log('比例尺控件添加成功')
+      } else {
+        console.warn('比例尺控件不可用，跳过')
+      }
+    } catch (error) {
+      console.warn('添加比例尺控件失败:', error)
+    }
+
+    try {
+      if (typeof AMap.ToolBar === 'function') {
+        map.addControl(new AMap.ToolBar())
+        console.log('工具栏控件添加成功')
+      } else {
+        console.warn('工具栏控件不可用，跳过')
+      }
+    } catch (error) {
+      console.warn('添加工具栏控件失败:', error)
+    }
+
+    try {
+      if (typeof AMap.MapType === 'function') {
+        map.addControl(new AMap.MapType())
+        console.log('地图类型控件添加成功')
+      } else {
+        console.warn('地图类型控件不可用，跳过')
+      }
+    } catch (error) {
+      console.warn('添加地图类型控件失败:', error)
+    }
 
     // 初始化标记点
     initMarkers()
@@ -1414,8 +1455,18 @@ const loadAMapAPI = () => {
     }
 
     const script = document.createElement('script')
-    script.src = `https://webapi.amap.com/maps?v=${mapConfig.amap.version}&key=${mapConfig.amap.apiKey}&plugin=${mapConfig.amap.plugins.join(',')}`
-    script.onload = () => resolve(AMap)
+    // 修复插件名称，使用正确的插件标识符
+    script.src = `https://webapi.amap.com/maps?v=${mapConfig.amap.version}&key=${mapConfig.amap.apiKey}&plugin=AMap.Scale,AMap.ToolBar,AMap.MapType`
+    script.onload = () => {
+      // 添加延迟确保插件完全加载
+      setTimeout(() => {
+        console.log('高德地图API加载完成，AMap对象:', AMap)
+        if (AMap && typeof AMap === 'object') {
+          console.log('可用插件:', Object.keys(AMap).filter(key => key.includes('Scale') || key.includes('ToolBar') || key.includes('MapType')))
+        }
+        resolve(AMap)
+      }, 1000)
+    }
     script.onerror = reject
     document.head.appendChild(script)
   })
@@ -1424,6 +1475,7 @@ const loadAMapAPI = () => {
 // 生命周期
 onMounted(async () => {
   console.log('全景视图组件已挂载')
+  console.log('地图配置:', mapConfig)
   
   // 验证配置
   const configValidation = validateConfig()
@@ -1433,13 +1485,19 @@ onMounted(async () => {
   }
   
   try {
+    console.log('开始加载高德地图API...')
     await loadAMapAPI()
+    console.log('高德地图API加载成功')
+    
+    console.log('开始初始化地图...')
     initMap()
+    console.log('地图初始化完成')
     
     // 启动实时数据更新
     startDataUpdate()
   } catch (error) {
     console.error('加载地图失败:', error)
+    mapStatus.value = 'error'
   }
 })
 
@@ -1456,6 +1514,19 @@ onUnmounted(() => {
     map.destroy()
   }
 })
+
+// 重试加载地图
+const retryLoadMap = async () => {
+  mapStatus.value = 'loading'
+  try {
+    await loadAMapAPI()
+    initMap()
+    mapStatus.value = 'ready'
+  } catch (error) {
+    console.error('重试加载地图失败:', error)
+    mapStatus.value = 'error'
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -1473,9 +1544,15 @@ onUnmounted(() => {
     }
     
     p {
-      margin: 0;
+      margin: 0 0 16px 0;
       color: @text-color-secondary;
       font-size: @font-size-sm;
+    }
+    
+    .map-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
   }
 
