@@ -8,8 +8,8 @@
       class="layout-sider"
     >
       <div class="logo">
-        <img src="@/assets/logo.svg" alt="logo" />
-        <span v-show="!collapsed">智慧船舶监控</span>
+<!--        <img src="@/assets/logo.svg" alt="logo" />-->
+        <span v-show="!collapsed">中交润杨智慧船舶监控</span>
       </div>
       
       <a-menu

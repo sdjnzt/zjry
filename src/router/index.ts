@@ -497,7 +497,7 @@ router.beforeEach((to, from, next) => {
     if (window.location.hostname.includes('github.io')) {
       // 自动设置登录状态（仅用于演示）
       localStorage.setItem('isLoggedIn', 'true')
-      localStorage.setItem('currentUser', 'demo')
+      localStorage.setItem('currentUser', 'admin')
       next()
       return
     }
