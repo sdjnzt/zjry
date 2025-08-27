@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import Layout from '@/layout/index.vue'
 
@@ -466,7 +466,10 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  // 在GitHub Pages环境下使用hash模式，避免SPA路由问题
+  history: window.location.hostname.includes('github.io') 
+    ? createWebHashHistory() 
+    : createWebHistory(),
   routes
 })
 
@@ -488,7 +491,16 @@ router.beforeEach((to, from, next) => {
 
   // 检查是否已登录
   if (!localStorage.getItem('isLoggedIn')) {
-    // 未登录，重定向到登录页面
+    // 在GitHub Pages环境下，提供默认登录状态
+    if (window.location.hostname.includes('github.io')) {
+      // 自动设置登录状态（仅用于演示）
+      localStorage.setItem('isLoggedIn', 'true')
+      localStorage.setItem('currentUser', 'demo')
+      next()
+      return
+    }
+    
+    // 本地环境重定向到登录页面
     next('/login')
     return
   }
