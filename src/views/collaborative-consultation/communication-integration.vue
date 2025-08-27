@@ -380,8 +380,8 @@ const dispatchTasks = ref([
     executor: '张调度员',
     status: '执行中',
     priority: 'high',
-    startTime: '2024-01-15 09:00',
-    endTime: '2024-01-15 10:00',
+    startTime: '2025-08-27 09:00',
+    endTime: '2025-08-27 10:00',
     progress: 75
   },
   {
@@ -392,8 +392,8 @@ const dispatchTasks = ref([
     executor: '李操作员',
     status: '已完成',
     priority: 'normal',
-    startTime: '2024-01-15 08:00',
-    endTime: '2024-01-15 08:30',
+    startTime: '2025-08-27 08:00',
+    endTime: '2025-08-27 08:30',
     progress: 100
   }
 ])

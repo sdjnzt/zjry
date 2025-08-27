@@ -123,7 +123,32 @@
                 </div>
                 <div class="cell-content">
                   <div v-if="cell.camera && cell.camera.id" class="video-display">
-                    <div class="video-placeholder">
+                    <!-- 根据媒体类型显示图片或视频 -->
+                    <div v-if="cell.camera.mediaType === 'image' && cell.camera.mediaPath" class="camera-image">
+                      <img 
+                        :src="cell.camera.mediaPath" 
+                        :alt="`${cell.camera.name}摄像头`" 
+                        class="camera-img"
+                      />
+                      <!-- 时间显示 -->
+                      <div class="time-overlay">
+                        <div class="timestamp">{{ getCurrentTime() }}</div>
+                      </div>
+                    </div>
+                    <div v-else-if="cell.camera.mediaType === 'video' && cell.camera.mediaPath" class="camera-video">
+                      <video 
+                        :src="cell.camera.mediaPath" 
+                        autoplay 
+                        muted 
+                        loop 
+                        class="camera-vid"
+                      />
+                      <!-- 时间显示 -->
+                      <div class="time-overlay">
+                        <div class="timestamp">{{ getCurrentTime() }}</div>
+                      </div>
+                    </div>
+                    <div v-else class="video-placeholder">
                       <VideoCameraOutlined class="camera-icon" />
                       <div class="camera-name">{{ cell.camera?.name || '' }}</div>
                       <div class="camera-location">{{ cell.camera?.location || '' }}</div>
@@ -289,6 +314,8 @@ interface PatrolCell {
     name: string;
     location: string;
     status: string;
+    mediaType: string; // 新增媒体类型
+    mediaPath: string; // 新增媒体路径
   } | null;
   index: number;
 }
@@ -323,9 +350,30 @@ const patrolPlans = ref([
     status: 'running',
     interval: 30,
     cameras: [
-      { id: 1, name: '码头1号监控', location: '码头前沿A区', status: '在线' },
-      { id: 2, name: '码头2号监控', location: '码头前沿B区', status: '在线' },
-      { id: 3, name: '码头3号监控', location: '码头前沿C区', status: '在线' }
+      { 
+        id: 1, 
+        name: '锚地1号监控', 
+        location: '码头前沿A区', 
+        status: '在线',
+        mediaType: 'image',
+        mediaPath: '/image/4.png'
+      },
+      { 
+        id: 2, 
+        name: '码头2号监控', 
+        location: '码头前沿B区', 
+        status: '在线',
+        mediaType: 'image',
+        mediaPath: '/image/2.png'
+      },
+      { 
+        id: 3, 
+        name: '码头3号监控', 
+        location: '码头前沿C区', 
+        status: '在线',
+        mediaType: 'image',
+        mediaPath: '/image/3.png'
+      }
     ]
   },
   {
@@ -334,8 +382,22 @@ const patrolPlans = ref([
     status: 'stopped',
     interval: 45,
     cameras: [
-      { id: 4, name: '主航道1号', location: '主航道入口', status: '在线' },
-      { id: 5, name: '主航道2号', location: '主航道中段', status: '在线' }
+      { 
+        id: 4, 
+        name: '主航道1号', 
+        location: '主航道入口', 
+        status: '在线',
+        mediaType: 'image',
+        mediaPath: '/image/4.png'
+      },
+      { 
+        id: 5, 
+        name: '主航道2号', 
+        location: '主航道中段', 
+        status: '在线',
+        mediaType: 'image',
+        mediaPath: '/image/1.png'
+      }
     ]
   },
   {
@@ -344,7 +406,14 @@ const patrolPlans = ref([
     status: 'stopped',
     interval: 60,
     cameras: [
-      { id: 6, name: '锚地监控点', location: '锚地区域中心', status: '在线' }
+      { 
+        id: 6, 
+        name: '锚地监控点', 
+        location: '锚地区域中心', 
+        status: '在线',
+        mediaType: 'image',
+        mediaPath: '/image/1.png'
+      }
     ]
   },
   {
@@ -353,8 +422,22 @@ const patrolPlans = ref([
     status: 'stopped',
     interval: 50,
     cameras: [
-      { id: 7, name: '码头4号监控', location: '码头前沿D区', status: '在线' },
-      { id: 1, name: '码头1号监控', location: '码头前沿A区', status: '在线' }
+      { 
+        id: 7, 
+        name: '码头4号监控', 
+        location: '码头前沿D区', 
+        status: '在线',
+        mediaType: 'image',
+        mediaPath: '/image/1.png'
+      },
+      { 
+        id: 1, 
+        name: '码头1号监控', 
+        location: '码头前沿A区', 
+        status: '在线',
+        mediaType: 'video',
+        mediaPath: '/image/1.mp4'
+      }
     ]
   },
   {
@@ -363,22 +446,92 @@ const patrolPlans = ref([
     status: 'stopped',
     interval: 40,
     cameras: [
-      { id: 8, name: '航道3号监控', location: '主航道出口', status: '在线' },
-      { id: 5, name: '主航道2号', location: '主航道中段', status: '在线' }
+      { 
+        id: 8, 
+        name: '航道3号监控', 
+        location: '主航道出口', 
+        status: '在线',
+        mediaType: 'image',
+        mediaPath: '/image/1.png'
+      },
+      { 
+        id: 5, 
+        name: '主航道2号', 
+        location: '主航道中段', 
+        status: '在线',
+        mediaType: 'image',
+        mediaPath: '/image/1.png'
+      }
     ]
   }
 ])
 
 // 可用摄像头列表
 const availableCameras = ref([
-  { key: 1, title: '码头1号监控', location: '码头前沿A区', status: '在线' },
-  { key: 2, title: '码头2号监控', location: '码头前沿B区', status: '在线' },
-  { key: 3, title: '码头3号监控', location: '码头前沿C区', status: '在线' },
-  { key: 4, title: '主航道1号', location: '主航道入口', status: '在线' },
-  { key: 5, title: '主航道2号', location: '主航道中段', status: '在线' },
-  { key: 6, title: '锚地监控点', location: '锚地区域中心', status: '在线' },
-  { key: 7, title: '码头4号监控', location: '码头前沿D区', status: '在线' },
-  { key: 8, title: '航道3号监控', location: '主航道出口', status: '在线' }
+  { 
+    key: 1, 
+    title: '码头1号监控', 
+    location: '码头前沿A区', 
+    status: '在线',
+    mediaType: 'image',
+    mediaPath: '/image/1.png'
+  },
+  { 
+    key: 2, 
+    title: '码头2号监控', 
+    location: '码头前沿B区', 
+    status: '在线',
+    mediaType: 'image',
+    mediaPath: '/image/2.png'
+  },
+  { 
+    key: 3, 
+    title: '码头3号监控', 
+    location: '码头前沿C区', 
+    status: '在线',
+    mediaType: 'image',
+    mediaPath: '/image/3.png'
+  },
+  { 
+    key: 4, 
+    title: '主航道1号', 
+    location: '主航道入口', 
+    status: '在线',
+    mediaType: 'image',
+    mediaPath: '/image/4.png'
+  },
+  { 
+    key: 5, 
+    title: '主航道2号', 
+    location: '主航道中段', 
+    status: '在线',
+    mediaType: 'image',
+    mediaPath: '/image/1.png'
+  },
+  { 
+    key: 6, 
+    title: '锚地监控点', 
+    location: '锚地区域中心', 
+    status: '在线',
+    mediaType: 'image',
+    mediaPath: '/image/1.png'
+  },
+  { 
+    key: 7, 
+    title: '码头4号监控', 
+    location: '码头前沿D区', 
+    status: '在线',
+    mediaType: 'image',
+    mediaPath: '/image/1.png'
+  },
+  { 
+    key: 8, 
+    title: '航道3号监控', 
+    location: '主航道出口', 
+    status: '在线',
+    mediaType: 'image',
+    mediaPath: '/image/1.png'
+  }
 ])
 
 // 计算属性
@@ -410,8 +563,8 @@ const selectPatrol = (patrol: any) => {
   if (patrol.cameras.length > 0) {
     currentCameraIndex.value = 0
     currentCamera.value = patrol.cameras[0]
-    // 重置矩阵为未配置状态
-    resetMatrix()
+    // 不要重置矩阵，保持前三个摄像头自动配置
+    // resetMatrix()
   }
 }
 
@@ -498,7 +651,9 @@ const selectCamera = (camera: any) => {
       id: camera.key,
       name: camera.title,
       location: camera.location,
-      status: camera.status
+      status: camera.status,
+      mediaType: camera.mediaType, // 新增媒体类型
+      mediaPath: camera.mediaPath // 新增媒体路径
     }
     cameraPickerVisible.value = false
     message.success(`已选择摄像头: ${camera.title}`)
@@ -556,9 +711,11 @@ const savePatrol = () => {
         id: camera.key,
         name: camera.title,
         location: camera.location,
-        status: camera.status
+        status: camera.status,
+        mediaType: camera.mediaType, // 新增媒体类型
+        mediaPath: camera.mediaPath // 新增媒体路径
       }
-    }).filter(Boolean) as { id: number; name: string; location: string; status: string; }[]
+    }).filter(Boolean) as { id: number; name: string; location: string; status: string; mediaType: string; mediaPath: string; }[]
     message.success('预案已更新')
   } else {
     // 创建新预案
@@ -574,9 +731,11 @@ const savePatrol = () => {
           id: camera.key,
           name: camera.title,
           location: camera.location,
-          status: camera.status
+          status: camera.status,
+          mediaType: camera.mediaType, // 新增媒体类型
+          mediaPath: camera.mediaPath // 新增媒体路径
         }
-      }).filter(Boolean) as { id: number; name: string; location: string; status: string; }[]
+      }).filter(Boolean) as { id: number; name: string; location: string; status: string; mediaType: string; mediaPath: string; }[]
     }
     patrolPlans.value.push(newPatrol)
     message.success('预案已创建')
@@ -599,9 +758,43 @@ const resetPatrolForm = () => {
   patrolForm.timeRange = []
 }
 
-// 生命周期
+// 获取当前时间
+const getCurrentTime = () => {
+  const now = new Date()
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  return `${hours}:${minutes}`
+}
+
+// 初始化矩阵，自动配置前三个摄像头
+const initializeMatrix = () => {
+  const firstPatrol = patrolPlans.value[0]
+  if (firstPatrol && firstPatrol.cameras.length > 0) {
+    // 自动配置前三个摄像头到矩阵中
+    firstPatrol.cameras.forEach((camera, index) => {
+      if (index < 3) { // 只配置前三个
+        patrolCells.value[index].camera = {
+          id: camera.id,
+          name: camera.name,
+          location: camera.location,
+          status: camera.status,
+          mediaType: camera.mediaType,
+          mediaPath: camera.mediaPath
+        }
+      }
+    })
+  }
+}
+
+/**
+ * 组件挂载后的初始化
+ */
 onMounted(() => {
   console.log('智能轮巡组件已挂载')
+  
+  // 初始化矩阵，自动配置前三个摄像头
+  initializeMatrix()
+  
   // 默认选择第一个预案
   if (patrolPlans.value.length > 0) {
     selectPatrol(patrolPlans.value[0])
@@ -911,6 +1104,75 @@ onUnmounted(() => {
                   display: flex;
                   align-items: center;
                   justify-content: center;
+                  position: relative; /* Added for time overlay positioning */
+
+                  .camera-image {
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+                    .camera-img {
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                      border-radius: 8px;
+                      transition: transform 0.3s ease;
+                      
+                      &:hover {
+                        transform: scale(1.05);
+                      }
+                    }
+
+                    .time-overlay {
+                      position: absolute;
+                      top: 8px;
+                      right: 8px;
+                      background: rgba(0, 0, 0, 0.7);
+                      color: #fff;
+                      padding: 4px 8px;
+                      border-radius: 4px;
+                      font-size: 11px;
+                      font-family: 'Courier New', monospace;
+                      border: 1px solid rgba(255, 255, 255, 0.3);
+                    }
+                  }
+
+                  .camera-video {
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+                    .camera-vid {
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                      border-radius: 8px;
+                      transition: transform 0.3s ease;
+                      
+                      &:hover {
+                        transform: scale(1.05);
+                      }
+                    }
+
+                    .time-overlay {
+                      position: absolute;
+                      top: 8px;
+                      right: 8px;
+                      background: rgba(0, 0, 0, 0.7);
+                      color: #fff;
+                      padding: 4px 8px;
+                      border-radius: 4px;
+                      font-size: 11px;
+                      font-family: 'Courier New', monospace;
+                      border: 1px solid rgba(255, 255, 255, 0.3);
+                    }
+                  }
 
                   .video-placeholder {
                     text-align: center;

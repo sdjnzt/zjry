@@ -342,11 +342,42 @@
             <!-- 视频内容区域 -->
             <div class="cell-content">
               <div v-if="cell.isActive && cell.isPlaying" class="video-player">
-                <div class="video-placeholder">
+                <!-- 根据摄像头媒体类型显示不同的内容 -->
+                <div v-if="cell.mediaType === 'image' && cell.mediaPath" class="video-content">
+                  <img 
+                    :src="cell.mediaPath" 
+                    :alt="`${cell.name}摄像头`" 
+                    class="camera-image" 
+                    @error="handleImageError"
+                    @load="handleImageLoad"
+                  />
+                  <!-- 只显示时间和分辨率 -->
+                  <div class="time-overlay">
+                    <div class="timestamp">{{ getCurrentTime() }}</div>
+                    <div class="resolution">{{ cell.resolution }}</div>
+                  </div>
+                </div>
+                <div v-else-if="cell.mediaType === 'video' && cell.mediaPath" class="video-content">
+                  <video 
+                    :src="cell.mediaPath" 
+                    autoplay 
+                    muted 
+                    loop 
+                    class="camera-video"
+                    @error="handleVideoError"
+                    @loadeddata="handleVideoLoad"
+                  />
+                  <!-- 只显示时间和分辨率 -->
+                  <div class="time-overlay">
+                    <div class="timestamp">{{ getCurrentTime() }}</div>
+                    <div class="resolution">{{ cell.resolution }}</div>
+                  </div>
+                </div>
+                <div v-else class="video-placeholder">
                   <VideoCameraOutlined class="video-icon" />
                   <div class="video-text">{{ cell.name }}</div>
                   <div class="video-location">{{ cell.location }}</div>
-                  </div>
+                </div>
                 
                 <!-- 状态指示器 - 根据设置显示 -->
                 <div class="status-indicators" v-if="displaySettings.showStatusIndicators">
@@ -703,11 +734,36 @@
         </a-menu>
       </template>
     </a-dropdown>
+
+    <!-- 调试信息面板 -->
+    <div v-if="debugInfo" class="debug-panel">
+      <h4>调试信息</h4>
+      <div class="debug-item">
+        <span class="label">当前布局:</span>
+        <span class="value">{{ currentLayout }}</span>
+      </div>
+      <div class="debug-item">
+        <span class="label">激活摄像头:</span>
+        <span class="value">{{ activeCameraCount }}</span>
+      </div>
+      <div class="debug-item">
+        <span class="label">播放状态:</span>
+        <span class="value">{{ isPlaying ? '播放中' : '已暂停' }}</span>
+      </div>
+      <div class="debug-item">
+        <span class="label">录制状态:</span>
+        <span class="value">{{ recordingCount }}个录制中</span>
+      </div>
+      <div class="debug-item">
+        <span class="label">媒体文件:</span>
+        <span class="value">{{ getMediaInfo() }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
@@ -866,6 +922,8 @@ type MatrixCell = {
   fps: string;
   isRecording: boolean;
   hasAlarm: boolean;
+  mediaType: string;
+  mediaPath: string;
 }
 const matrixCells = ref<MatrixCell[]>([])
 
@@ -873,12 +931,78 @@ const matrixCells = ref<MatrixCell[]>([])
 
 /** 可用摄像头列表 */
 const availableCameras = ref([
-  { id: 1, name: '码头1号', location: '码头前沿', ip: '192.168.1.101', resolution: '1080P', fps: '25', status: 'online', lastUpdate: '2025-08-26 14:30:25' },
-  { id: 2, name: '码头2号', location: '码头前沿', ip: '192.168.1.102', resolution: '1080P', fps: '25', status: 'online', lastUpdate: '2025-08-26 14:30:22' },
-  { id: 3, name: '航道1号', location: '主航道', ip: '192.168.1.103', resolution: '4K', fps: '30', status: 'offline', lastUpdate: '2025-08-26 14:25:18' },
-  { id: 4, name: '锚地1号', location: '锚地区域', ip: '192.168.1.104', resolution: '1080P', fps: '25', status: 'online', lastUpdate: '2025-08-26 14:30:28' },
-  { id: 5, name: '航道2号', location: '主航道', ip: '192.168.1.105', resolution: '4K', fps: '30', status: 'online', lastUpdate: '2025-08-26 14:30:20' },
-  { id: 6, name: '码头3号', location: '码头前沿', ip: '192.168.1.106', resolution: '1080P', fps: '25', status: 'online', lastUpdate: '2025-08-26 14:30:15' }
+  { 
+    id: 1, 
+    name: '码头1号', 
+    location: '码头前沿', 
+    ip: '192.168.1.101', 
+    resolution: '1080P', 
+    fps: '25', 
+    status: 'online', 
+    lastUpdate: '2025-08-26 14:30:25',
+    mediaType: 'video',
+    mediaPath: '/image/1.mp4'
+  },
+  { 
+    id: 2, 
+    name: '码头2号', 
+    location: '码头前沿', 
+    ip: '192.168.1.102', 
+    resolution: '1080P', 
+    fps: '25', 
+    status: 'online', 
+    lastUpdate: '2025-08-26 14:30:22',
+    mediaType: 'image',
+    mediaPath: '/image/2.png'
+  },
+  { 
+    id: 3, 
+    name: '航道1号', 
+    location: '主航道', 
+    ip: '192.168.1.103', 
+    resolution: '4K', 
+    fps: '30', 
+    status: 'online', 
+    lastUpdate: '2025-08-26 14:25:18',
+    mediaType: 'image',
+    mediaPath: '/image/3.png'
+  },
+  { 
+    id: 4, 
+    name: '锚地1号', 
+    location: '锚地区域', 
+    ip: '192.168.1.104', 
+    resolution: '1080P', 
+    fps: '25', 
+    status: 'online', 
+    lastUpdate: '2025-08-26 14:30:28',
+    mediaType: 'image',
+    mediaPath: '/image/4.png'
+  },
+  { 
+    id: 5, 
+    name: '航道2号', 
+    location: '主航道', 
+    ip: '192.168.1.105', 
+    resolution: '4K', 
+    fps: '30', 
+    status: 'online', 
+    lastUpdate: '2025-08-26 14:30:20',
+    mediaType: 'video',
+    mediaPath: '/image/1.mp4'
+  },
+  { 
+    id: 6, 
+    name: '码头3号', 
+    location: '码头前沿', 
+    ip: '192.168.1.106', 
+    resolution: '1080P', 
+    fps: '25', 
+    status: 'online', 
+    lastUpdate: '2025-08-26 14:30:15',
+    mediaType: 'image',
+    mediaPath: '/image/1.png'
+  }
 ])
 
 /** 摄像头选择器 **/
@@ -923,6 +1047,9 @@ const chooseForTarget = (cam: any) => {
   cell.fps = cam.fps
   cell.isRecording = false
   cell.hasAlarm = false
+  // 添加媒体信息
+  cell.mediaType = cam.mediaType
+  cell.mediaPath = cam.mediaPath
   pickerVisible.value = false
 }
 
@@ -931,8 +1058,14 @@ const chooseForTarget = (cam: any) => {
 /** 右键菜单显示状态 */
 const showContextMenu = ref(false)
 
+/** 调试信息显示状态 */
+const debugInfo = ref(false)
+
 /** 当前激活的标签页 */
 const activeTab = ref('layout')
+
+/** 当前时间 */
+const currentTime = ref(new Date())
 
 // ==================== 计算属性 ====================
 
@@ -1006,21 +1139,26 @@ const changeLayout = (layout: string) => {
     
     // 创建新的单元格
     for (let i = 0; i < cellCount; i++) {
-      // 创建新的空单元格（默认未配置）
+      // 默认分配摄像头（如果可用摄像头数量足够）
+      const cameraIndex = i % availableCameras.value.length
+      const camera = availableCameras.value[cameraIndex]
+      
       matrixCells.value.push({
-        id: i + 1,
-        name: `摄像头${i + 1}`,
-        isActive: false,
-        isPlaying: false,
-        status: '未配置',
-        statusClass: 'offline',
-        location: '未配置',
-        ip: '未配置',
+        id: camera.id,
+        name: camera.name,
+        isActive: true, // 默认激活
+        isPlaying: true, // 默认播放
+        status: camera.status === 'online' ? '在线' : '离线',
+        statusClass: camera.status === 'online' ? 'online' : 'offline',
+        location: camera.location,
+        ip: camera.ip,
         lastUpdate: new Date().toLocaleString(),
-        resolution: '',
-        fps: '',
+        resolution: camera.resolution,
+        fps: camera.fps,
         isRecording: false,
-        hasAlarm: false
+        hasAlarm: false,
+        mediaType: camera.mediaType,
+        mediaPath: camera.mediaPath
       })
     }
   }
@@ -1119,6 +1257,8 @@ const selectCamera = (camera: any) => {
     emptyCell.fps = camera.fps
     emptyCell.isRecording = false
     emptyCell.hasAlarm = false
+    emptyCell.mediaType = camera.mediaType
+    emptyCell.mediaPath = camera.mediaPath
   }
   showCameraModal.value = false
 }
@@ -1443,9 +1583,61 @@ const handleContextMenuClick = (e: any) => {
 onMounted(() => {
   console.log('视频矩阵组件已挂载')
   
-  // 初始化布局为2×2
-  changeLayout('4')
+  // 初始化布局为单屏
+  changeLayout('1')
+  
+  // 启动时间更新定时器
+  const timeInterval = setInterval(() => {
+    currentTime.value = new Date()
+  }, 1000)
+  
+  // 组件卸载时清理定时器
+  onUnmounted(() => {
+    clearInterval(timeInterval)
+  })
 })
+
+/**
+ * 处理图片加载错误
+ */
+const handleImageError = () => {
+  console.error('图片加载失败')
+}
+
+/**
+ * 处理图片加载成功
+ */
+const handleImageLoad = () => {
+  console.log('图片加载成功')
+}
+
+/**
+ * 处理视频加载错误
+ */
+const handleVideoError = () => {
+  console.error('视频加载失败')
+}
+
+/**
+ * 处理视频加载成功
+ */
+const handleVideoLoad = () => {
+  console.log('视频加载成功')
+}
+
+/**
+ * 获取媒体信息
+ */
+const getMediaInfo = () => {
+  return matrixCells.value.map(cell => `${cell.name} (${cell.mediaType}): ${cell.mediaPath}`).join(', ')
+}
+
+/**
+ * 获取当前时间
+ */
+const getCurrentTime = () => {
+  return currentTime.value.toLocaleString()
+}
 </script>
 
 <style lang="less" scoped>
@@ -1957,6 +2149,71 @@ onMounted(() => {
             .video-player {
               width: 100%;
               height: 100%;
+              position: relative;
+              
+              .video-content {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+                border-radius: 8px;
+                position: relative;
+                
+                .camera-image {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: 8px;
+                  transition: transform 0.3s ease;
+                  
+                  &:hover {
+                    transform: scale(1.05);
+                  }
+                }
+                
+                .camera-video {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: 8px;
+                  transition: transform 0.3s ease;
+                  
+                  &:hover {
+                    transform: scale(1.05);
+                  }
+                }
+                
+                .time-overlay {
+                  position: absolute;
+                  top: 12px;
+                  right: 12px;
+                  z-index: 10;
+                  
+                  .timestamp {
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 6px 10px;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    font-family: 'Courier New', monospace;
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    margin-bottom: 4px;
+                  }
+                  
+                  .resolution {
+                    background: rgba(0, 0, 0, 0.7);
+                    color: #ccc;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    font-size: 11px;
+                    font-family: 'Courier New', monospace;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    text-align: center;
+                  }
+                }
+              }
             }
 
             .video-placeholder {
@@ -2964,4 +3221,32 @@ onMounted(() => {
     }
   }
 }
+
+// 调试信息面板样式
+.debug-panel {
+  margin-top: 24px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+  .debug-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    .label {
+      font-weight: 600;
+    }
+
+    .value {
+      font-weight: 500;
+    }
+  }
+}
+
+
+
+
 </style>
