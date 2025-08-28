@@ -118,9 +118,7 @@
                 <div class="video-player">
                   <div class="video-placeholder">
                     <VideoCameraOutlined style="font-size: 48px; color: #1890ff;" />
-                    <p>视频播放器</p>
-                    <p>当前时间: {{ currentTime }}</p>
-                    <p>事件: {{ currentEvent?.id }}</p>
+                    <p>暂无数据</p>
                   </div>
                   <div class="video-controls">
                     <a-space>
