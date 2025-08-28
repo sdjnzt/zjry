@@ -179,16 +179,16 @@
               style="width: 150px"
             >
               <a-select-option value="">全部人员</a-select-option>
-              <a-select-option value="张三">张三</a-select-option>
-              <a-select-option value="李四">李四</a-select-option>
-              <a-select-option value="王五">王五</a-select-option>
-              <a-select-option value="赵六">赵六</a-select-option>
-              <a-select-option value="钱七">钱七</a-select-option>
-              <a-select-option value="孙八">孙八</a-select-option>
-              <a-select-option value="周九">周九</a-select-option>
-              <a-select-option value="吴十">吴十</a-select-option>
-              <a-select-option value="郑十一">郑十一</a-select-option>
-              <a-select-option value="王十二">王十二</a-select-option>
+              <a-select-option value="陈志强">陈志强</a-select-option>
+              <a-select-option value="李明华">李明华</a-select-option>
+              <a-select-option value="王建国">王建国</a-select-option>
+              <a-select-option value="赵海军">赵海军</a-select-option>
+              <a-select-option value="钱志明">钱志明</a-select-option>
+              <a-select-option value="孙海洋">孙海洋</a-select-option>
+              <a-select-option value="周建华">周建华</a-select-option>
+              <a-select-option value="吴志强">吴志强</a-select-option>
+              <a-select-option value="李晓光">李晓光</a-select-option>
+              <a-select-option value="赵明亮">赵明亮</a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item label="目标区域">
@@ -234,6 +234,12 @@
       <a-row :gutter="16">
         <a-col :span="12">
           <a-card title="调度类型分布" class="chart-card">
+            <template #extra>
+              <a-button type="link" size="small" @click="refreshDispatchTypeChart">
+                <ReloadOutlined />
+                刷新
+              </a-button>
+            </template>
             <div class="chart-container">
               <a-spin :spinning="chartLoading" tip="图表加载中...">
                 <div ref="dispatchTypeChartRef" class="chart-wrapper"></div>
@@ -243,6 +249,12 @@
         </a-col>
         <a-col :span="12">
           <a-card title="执行状态趋势" class="chart-card">
+            <template #extra>
+              <a-button type="link" size="small" @click="refreshExecutionStatusChart">
+                <ReloadOutlined />
+                刷新
+              </a-button>
+            </template>
             <div class="chart-container">
               <a-spin :spinning="chartLoading" tip="图表加载中...">
                 <div ref="executionStatusChartRef" class="chart-wrapper"></div>
@@ -481,7 +493,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     priority: 'high',
     startTime: '2025-08-20 14:30:00',
     endTime: '2025-08-20 16:45:00',
-    executor: '张三',
+    executor: '陈志强',
     resources: '监控摄像头、无人机、救援船只',
     targetArea: '主航道A段',
     description: '立即启动船舶碰撞事故应急响应预案',
@@ -495,7 +507,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     status: 'executing',
     priority: 'medium',
     startTime: '2025-08-20 09:00:00',
-    executor: '李四',
+    executor: '李明华',
     resources: '固定监控点、移动巡查设备',
     targetArea: '全航道范围',
     description: '执行日常航道安全巡查任务',
@@ -509,7 +521,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     priority: 'high',
     startTime: '2025-08-20 16:00:00',
     endTime: '2025-08-20 18:30:00',
-    executor: '王五',
+    executor: '王建国',
     resources: '全天候监控设备、应急通讯设备',
     targetArea: '重点监控区域',
     description: '执行恶劣天气下的专项安全检查',
@@ -524,7 +536,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     priority: 'medium',
     startTime: '2025-08-20 10:00:00',
     endTime: '2025-08-20 12:15:00',
-    executor: '赵六',
+    executor: '赵海军',
     resources: '各部门监控资源、通讯设备',
     targetArea: '协同区域',
     description: '启动多部门协同调度预案',
@@ -539,7 +551,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     priority: 'medium',
     startTime: '2025-08-19 08:00:00',
     endTime: '2025-08-19 17:30:00',
-    executor: '陈七',
+    executor: '陈志强',
     resources: '港口监控系统、安全检测设备',
     targetArea: '港口作业区',
     description: '执行港口安全巡检任务',
@@ -554,7 +566,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     priority: 'high',
     startTime: '2025-08-19 20:00:00',
     endTime: '2025-08-19 22:15:00',
-    executor: '刘八',
+    executor: '钱志明',
     resources: '雷达监控、AIS系统、视频监控',
     targetArea: '限速航道段',
     description: '监控船舶超速行为',
@@ -569,7 +581,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     priority: 'low',
     startTime: '2025-08-18 14:00:00',
     endTime: '2025-08-18 15:30:00',
-    executor: '孙九',
+    executor: '孙海洋',
     resources: '通讯设备、测试终端',
     targetArea: '通讯测试区域',
     description: '测试应急通讯系统功能',
@@ -583,7 +595,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     status: 'executing',
     priority: 'medium',
     startTime: '2025-08-18 07:00:00',
-    executor: '周十',
+    executor: '周建华',
     resources: '水下监控设备、疏浚船监控',
     targetArea: '疏浚作业区',
     description: '监控航道疏浚作业进度',
@@ -597,7 +609,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     priority: 'high',
     startTime: '2025-08-17 16:00:00',
     endTime: '2025-08-17 18:30:00',
-    executor: '吴十一',
+    executor: '吴志强',
     resources: '引导船、监控设备、通讯系统',
     targetArea: '靠泊区域',
     description: '引导大型船舶安全靠泊',
@@ -612,7 +624,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     priority: 'medium',
     startTime: '2025-08-17 22:00:00',
     endTime: '2025-08-18 06:00:00',
-    executor: '郑十二',
+    executor: '李晓光',
     resources: '夜视设备、红外监控、巡逻车',
     targetArea: '夜间重点区域',
     description: '执行夜间安全巡查任务',
@@ -627,7 +639,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     priority: 'low',
     startTime: '2025-08-16 00:00:00',
     endTime: '2025-08-16 23:59:59',
-    executor: '王十三',
+    executor: '赵明亮',
     resources: '流量统计系统、监控设备',
     targetArea: '统计监测点',
     description: '统计24小时船舶流量数据',
@@ -642,7 +654,7 @@ const dispatchRecords = ref<DispatchRecord[]>([
     priority: 'medium',
     startTime: '2025-08-15 09:00:00',
     endTime: '2025-08-15 17:00:00',
-    executor: '李十四',
+    executor: '陈志强',
     resources: '维护工具、检测设备、备用设备',
     targetArea: '设备维护区',
     description: '执行设备定期维护检查',
@@ -952,141 +964,199 @@ const executionStatusChartRef = ref<HTMLElement | null>(null)
  * 初始化调度类型分布图表
  */
 const initDispatchTypeChart = () => {
-  if (!dispatchTypeChartRef.value) return
+  console.log('初始化调度类型分布图表')
+  console.log('图表容器引用:', dispatchTypeChartRef.value)
   
-  const chart = echarts.init(dispatchTypeChartRef.value)
-  
-  const option = {
-    title: {
-      text: '调度类型分布',
-      left: 'center',
-      textStyle: {
-        fontSize: 14,
-        fontWeight: 'normal'
-      }
-    },
-    tooltip: {
-      trigger: 'item',
-      formatter: '{a} <br/>{b}: {c} ({d}%)'
-    },
-    legend: {
-      orient: 'vertical',
-      left: 'left',
-      top: 'middle'
-    },
-    series: [
-      {
-        name: '调度类型',
-        type: 'pie',
-        radius: '50%',
-        center: ['60%', '50%'],
-        data: [
-          { value: chartData.emergency, name: '紧急调度', itemStyle: { color: '#ff4d4f' } },
-          { value: chartData.routine, name: '例行调度', itemStyle: { color: '#1890ff' } },
-          { value: chartData.special, name: '专项调度', itemStyle: { color: '#52c41a' } },
-          { value: chartData.coordination, name: '协同调度', itemStyle: { color: '#faad14' } }
-        ],
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ]
+  if (!dispatchTypeChartRef.value) {
+    console.error('调度类型图表容器未找到')
+    return
   }
   
-  chart.setOption(option)
+  try {
+    const chart = echarts.init(dispatchTypeChartRef.value)
+    console.log('图表实例创建成功:', chart)
+    
+    const option = {
+      title: {
+        text: '调度类型分布',
+        left: 'center',
+        textStyle: {
+          fontSize: 14,
+          fontWeight: 'normal'
+        }
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        top: 'middle'
+      },
+      series: [
+        {
+          name: '调度类型',
+          type: 'pie',
+          radius: '50%',
+          center: ['60%', '50%'],
+          data: [
+            { value: chartData.emergency, name: '紧急调度', itemStyle: { color: '#ff4d4f' } },
+            { value: chartData.routine, name: '例行调度', itemStyle: { color: '#1890ff' } },
+            { value: chartData.special, name: '专项调度', itemStyle: { color: '#52c41a' } },
+            { value: chartData.coordination, name: '协同调度', itemStyle: { color: '#faad14' } }
+          ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+    }
+    
+    chart.setOption(option)
+    console.log('调度类型图表配置成功')
+  } catch (error) {
+    console.error('初始化调度类型图表失败:', error)
+  }
 }
 
 /**
  * 初始化执行状态趋势图表
  */
 const initExecutionStatusChart = () => {
-  if (!executionStatusChartRef.value) return
+  console.log('初始化执行状态趋势图表')
+  console.log('图表容器引用:', executionStatusChartRef.value)
   
-  const chart = echarts.init(executionStatusChartRef.value)
-  
-  const option = {
-    title: {
-      text: '近7天执行趋势',
-      left: 'center',
-      textStyle: {
-        fontSize: 14,
-        fontWeight: 'normal'
-      }
-    },
-    tooltip: {
-      trigger: 'axis'
-    },
-    legend: {
-      data: ['成功', '失败'],
-      bottom: 10
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '15%',
-      containLabel: true
-    },
-    xAxis: {
-      type: 'category',
-      data: ['01-14', '01-15', '01-16', '01-17', '01-18', '01-19', '01-20']
-    },
-    yAxis: {
-      type: 'value'
-    },
-    series: [
-      {
-        name: '成功',
-        type: 'line',
-        smooth: true,
-        data: [12, 15, 18, 14, 16, 13, 17],
-        itemStyle: { color: '#52c41a' },
-        areaStyle: {
-          color: {
-            type: 'linear',
-            x: 0, y: 0, x2: 0, y2: 1,
-            colorStops: [
-              { offset: 0, color: 'rgba(82, 196, 26, 0.3)' },
-              { offset: 1, color: 'rgba(82, 196, 26, 0.1)' }
-            ]
-          }
-        }
-      },
-      {
-        name: '失败',
-        type: 'line',
-        smooth: true,
-        data: [1, 2, 0, 1, 2, 1, 0],
-        itemStyle: { color: '#ff4d4f' },
-        areaStyle: {
-          color: {
-            type: 'linear',
-            x: 0, y: 0, x2: 0, y2: 1,
-            colorStops: [
-              { offset: 0, color: 'rgba(255, 77, 79, 0.3)' },
-              { offset: 1, color: 'rgba(255, 77, 79, 0.1)' }
-            ]
-          }
-        }
-      }
-    ]
+  if (!executionStatusChartRef.value) {
+    console.error('执行状态趋势图表容器未找到')
+    return
   }
   
-  chart.setOption(option)
+  try {
+    const chart = echarts.init(executionStatusChartRef.value)
+    console.log('执行状态趋势图表实例创建成功:', chart)
+    
+    const option = {
+      title: {
+        text: '近7天执行趋势',
+        left: 'center',
+        textStyle: {
+          fontSize: 14,
+          fontWeight: 'normal'
+        }
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: ['成功', '失败'],
+        bottom: 10
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '15%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        data: ['01-14', '01-15', '01-16', '01-17', '01-18', '01-19', '01-20']
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: '成功',
+          type: 'line',
+          smooth: true,
+          data: [12, 15, 18, 14, 16, 13, 17],
+          itemStyle: { color: '#52c41a' },
+          areaStyle: {
+            color: {
+              type: 'linear',
+              x: 0, y: 0, x2: 0, y2: 1,
+              colorStops: [
+                { offset: 0, color: 'rgba(82, 196, 26, 0.3)' },
+                { offset: 1, color: 'rgba(82, 196, 26, 0.1)' }
+              ]
+            }
+          }
+        },
+        {
+          name: '失败',
+          type: 'line',
+          smooth: true,
+          data: [1, 2, 0, 1, 2, 1, 0],
+          itemStyle: { color: '#ff4d4f' },
+          areaStyle: {
+            color: {
+              type: 'linear',
+              x: 0, y: 0, x2: 0, y2: 1,
+              colorStops: [
+                { offset: 0, color: 'rgba(255, 77, 79, 0.3)' },
+                { offset: 1, color: 'rgba(255, 77, 79, 0.1)' }
+              ]
+            }
+          }
+        }
+      ]
+    }
+    
+    chart.setOption(option)
+    console.log('执行状态趋势图表配置成功')
+  } catch (error) {
+    console.error('初始化执行状态趋势图表失败:', error)
+  }
+}
+
+/**
+ * 刷新调度类型分布图表
+ */
+const refreshDispatchTypeChart = () => {
+  console.log('刷新调度类型分布图表')
+  chartLoading.value = true
+  setTimeout(() => {
+    initDispatchTypeChart()
+    chartLoading.value = false
+  }, 500)
+}
+
+/**
+ * 刷新执行状态趋势图表
+ */
+const refreshExecutionStatusChart = () => {
+  console.log('刷新执行状态趋势图表')
+  chartLoading.value = true
+  setTimeout(() => {
+    initExecutionStatusChart()
+    chartLoading.value = false
+  }, 500)
 }
 
 // 组件挂载后的初始化
 onMounted(() => {
   console.log('视频调度记录页面已加载')
   
-  // 初始化图表
-  nextTick(() => {
-    initDispatchTypeChart()
-    initExecutionStatusChart()
-    chartLoading.value = false
+  // 延迟初始化图表，确保DOM完全渲染
+  setTimeout(() => {
+    nextTick(() => {
+      initDispatchTypeChart()
+      initExecutionStatusChart()
+      chartLoading.value = false
+    })
+  }, 100)
+  
+  // 监听窗口大小变化，重绘图表
+  window.addEventListener('resize', () => {
+    nextTick(() => {
+      initDispatchTypeChart()
+      initExecutionStatusChart()
+    })
   })
 })
 </script>
@@ -1173,16 +1243,16 @@ onMounted(() => {
 
     .chart-card {
       .chart-container {
-        height: 300px;
+        height: 400px;
         background: #fafafa;
         border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        padding: 16px;
+        position: relative;
 
         .chart-wrapper {
           width: 100%;
           height: 100%;
+          min-height: 350px;
         }
       }
     }

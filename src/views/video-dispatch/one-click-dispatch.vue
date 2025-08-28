@@ -497,7 +497,7 @@ const recentRecords = ref<DispatchRecord[]>([
     type: 'emergency',
     status: 'executing',
     startTime: '2025-08-20 14:30:00',
-    executor: '张三',
+    executor: '陈志强',
     result: '正在执行中'
   },
   {
@@ -507,7 +507,7 @@ const recentRecords = ref<DispatchRecord[]>([
     status: 'completed',
     startTime: '2025-08-20 09:00:00',
     endTime: '2025-08-20 12:00:00',
-    executor: '李四',
+    executor: '李明华',
     result: '巡查完成，发现2处安全隐患'
   },
   {
@@ -516,7 +516,7 @@ const recentRecords = ref<DispatchRecord[]>([
     type: 'special',
     status: 'waiting',
     startTime: '2025-08-20 16:00:00',
-    executor: '王五',
+    executor: '王建国',
     result: '等待天气条件满足'
   },
   {
@@ -526,7 +526,7 @@ const recentRecords = ref<DispatchRecord[]>([
     status: 'completed',
     startTime: '2025-08-19 08:15:00',
     endTime: '2025-08-19 16:30:00',
-    executor: '赵六',
+    executor: '赵海军',
     result: '救援完成，船舶成功脱险'
   },
   {
@@ -536,7 +536,7 @@ const recentRecords = ref<DispatchRecord[]>([
     status: 'completed',
     startTime: '2025-08-19 22:45:00',
     endTime: '2025-08-20 03:20:00',
-    executor: '钱七',
+    executor: '钱志明',
     result: '火势已控制，无人员伤亡'
   },
   {
@@ -546,7 +546,7 @@ const recentRecords = ref<DispatchRecord[]>([
     status: 'completed',
     startTime: '2025-08-18 15:20:00',
     endTime: '2025-08-18 18:45:00',
-    executor: '孙八',
+    executor: '孙海洋',
     result: '搜救完成，落水人员已获救'
   },
   {
@@ -555,7 +555,7 @@ const recentRecords = ref<DispatchRecord[]>([
     type: 'emergency',
     status: 'executing',
     startTime: '2025-08-20 10:30:00',
-    executor: '周九',
+    executor: '周建华',
     result: '正在清理泄漏货物'
   },
   {
@@ -564,7 +564,7 @@ const recentRecords = ref<DispatchRecord[]>([
     type: 'special',
     status: 'executing',
     startTime: '2025-08-20 07:00:00',
-    executor: '吴十',
+    executor: '吴志强',
     result: '疏通作业进行中'
   },
   {
@@ -573,7 +573,7 @@ const recentRecords = ref<DispatchRecord[]>([
     type: 'coordination',
     status: 'waiting',
     startTime: '2025-08-20 18:00:00',
-    executor: '郑十一',
+    executor: '李晓光',
     result: '等待各部门协调确认'
   },
   {
@@ -583,7 +583,7 @@ const recentRecords = ref<DispatchRecord[]>([
     status: 'completed',
     startTime: '2025-08-17 12:15:00',
     endTime: '2025-08-17 20:30:00',
-    executor: '王十二',
+    executor: '赵明亮',
     result: '船舶已控制，恢复正常航行'
   }
 ])
