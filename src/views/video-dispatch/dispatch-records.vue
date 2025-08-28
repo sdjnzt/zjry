@@ -1064,7 +1064,7 @@ const initExecutionStatusChart = () => {
       },
       xAxis: {
         type: 'category',
-        data: ['01-14', '01-15', '01-16', '01-17', '01-18', '01-19', '01-20']
+        data: ['08-20', '08-21', '08-22', '08-23', '08-24', '08-25', '08-26']
       },
       yAxis: {
         type: 'value'
